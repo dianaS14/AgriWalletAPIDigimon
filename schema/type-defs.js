@@ -10,7 +10,9 @@ const typeDefs = gql`
 
   type Query {
     characters:  [character!]
+    character(name: String!): character 
      }
+
 
 
 
