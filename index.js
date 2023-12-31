@@ -6,5 +6,5 @@ const server = new ApolloServer({ typeDefs, resolvers });
 const port = 3000;
 
 server.listen(port).then(({ url }) => {
-  console.log(`API IS RUNNING AT: ${url} `);
+  console.log(`🚀 API IS RUNNING AT: ${url} `);
 });
