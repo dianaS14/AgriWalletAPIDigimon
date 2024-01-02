@@ -45,7 +45,7 @@ const resolvers = {
                 }
 
 
-                return await res;
+                return  res;
 
 
 
@@ -55,21 +55,40 @@ const resolvers = {
             return apiResponse;
         },
 
-        character: (parent, args) => {
+        charactersByFilter: (parent, args) => {
 
-            const name = (args.name);
-            const level = (args.level);
+            //Format Arguments 
+            for (let clave in args) {
+                if (args[clave] === '') {
+                    delete args[clave];
+                } else {
+                    args[clave] = args[clave].toUpperCase().trim();
+                }
+            }
 
-            if (!name && !level) throw new Error("Debe de ingresar un parametro de busqueda");
+            if (args.length<1) throw new Error("Debe de ingresar por lo menos un parametro de busqueda");
 
-          
-          const apiResponse = axios.get(urlApi).then(async resp => {
-              
-              
-                const filter = resp.data.filter((character) => (character.name).toUpperCase().trim() == name.toUpperCase().trim());
+           
+            // get data
+            const apiResponse = axios.get(urlApi).then(async resp => {
+                const items = resp.data;
 
-                return await filter[0];
+                function filterItemsByCriteria(items, filters) {
+                    return items.filter(item => {
+                        return Object.keys(filters).every(key => {
+                            if (typeof item[key] !== 'undefined') {
+                                if (Array.isArray(filters[key])) {
+                                    return filters[key].includes(item[key].toUpperCase().trim());
+                                } else {
+                                    return item[key].toUpperCase().trim() === filters[key];
+                                }
+                            }
+                            return false;
+                        });
+                    });
+                }
 
+                return await  filterItemsByCriteria(items, args);;
             });
 
             return apiResponse;
@@ -86,7 +105,7 @@ const resolvers = {
                     }
                 })
 
-                return await levels;
+                return  levels;
 
             });
 

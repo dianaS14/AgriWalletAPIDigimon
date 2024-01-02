@@ -33,7 +33,7 @@ type CharacterEdge {
   type Query {
 
     characters(first: Int!, after: Cursor): CharacterConnection!
-    character(name: String , level:String): Character 
+    charactersByFilter(name: String , level:String): [Character!] 
     levels: [String]
      }
 
