@@ -56,21 +56,45 @@ const resolvers = {
         },
 
         character: (parent, args) => {
-            const name = (args.name).toUpperCase().trim();
 
-            const apiResponse = axios.get(urlApi).then(async resp => {
+            const name = (args.name);
+            const level = (args.level);
 
-                const filter = resp.data.filter((character) => (character.name).toUpperCase() == name);
+            if (!name && !level) throw new Error("Debe de ingresar un parametro de busqueda");
+
+          
+          const apiResponse = axios.get(urlApi).then(async resp => {
+              
+              
+                const filter = resp.data.filter((character) => (character.name).toUpperCase().trim() == name.toUpperCase().trim());
 
                 return await filter[0];
 
             });
 
+            return apiResponse;
+        },
 
+        levels: () => {
+            const apiResponse = axios.get(urlApi).then(async resp => {
+                var levels = []
+                resp.data.map(data => {
+                    if (levels.includes(data.level)) {
+                        levels = levels.filter((level) => level.level != data.level)
+                    } else {
+                        levels.push(data.level)
+                    }
+                })
+
+                return await levels;
+
+            });
 
             return apiResponse;
         },
     },
+
+
 
 };
 
