@@ -21,6 +21,7 @@ const resolvers = {
                     after = after.toUpperCase().trim();
                     filterIndexStart = data.findIndex(character => character.name.toUpperCase() === after);
                     if (filterIndexStart < 0) throw new Error("No se econtro al personaje enviado en la paginacion (after)");
+                    filterIndexStart++;
 
                 }
 
