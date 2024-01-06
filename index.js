@@ -1,7 +1,10 @@
 const { ApolloServer } = require("apollo-server");
 const { typeDefs } = require("./schema/type-defs");
 const { resolvers } = require("./schema/resolvers");
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs, resolvers, introspection: true,
+  playground: true,
+});
 
 const port = process.env.PORT || 3000;
 
